@@ -1,0 +1,1 @@
+The name CNT doesn't have any special meanings to it. Just planned to add chat note and todo functionality with MERN stack. Just trying to have fun as much as I can.
