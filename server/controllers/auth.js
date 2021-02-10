@@ -10,7 +10,6 @@ import dbHelper from '../helper/dbHelper.js'
 // #endregion
 
 /**
- * TODO: Make signUp return correct response messages from Mongoose
  * TODO: Make Login Functional [Only when everything in signup is working as needed]
  */
 

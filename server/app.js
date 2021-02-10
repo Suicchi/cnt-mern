@@ -1,9 +1,8 @@
 // #region Imports
-// Imports
+// * Module Imports
 import express from 'express'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
-import morgan from 'morgan'
 import path from 'path'
 import session from 'express-session'
 import connectMongo from 'connect-mongo'
@@ -12,13 +11,13 @@ import cors from 'cors'
 import passport from 'passport'
 import cookieParser from 'cookie-parser'
 
-// Import from local modules here
+// * Import from local modules here
 import connectDB from './configs/db.js'
 
-// Import Route files here
+// * Import Route files here
 import authRoute from './routes/auth.js'
 
-// passport config
+// * passport config
 import passportLocal from './configs/passport.js'
 
 // #endregion
@@ -76,16 +75,20 @@ app.use(cookieParser(process.env.SESSIONSECRET))
 // #endregion
 
 // #region Development
-// If the environment is development then use Morgan logger
+// * If the environment is development then use Morgan logger
 if (process.env.NODE_ENV === 'development') {
+	const morgan = import('morgan')
 	app.use(morgan('dev'))
 }
 // #endregion
 
 // #region Production
-// If the environment is production then set static files
+// * If the environment is production then set static files
 if (process.env.NODE_ENV === 'production') {
-	app.use('*', express.static(path.join(process.cwd(), '../client/build')))
+	app.use(express.static(path.join(process.cwd(), '/build')))
+	app.get('*', (req, res) => {
+		res.sendFile(path.join(__dirname, '/build'))
+	})
 }
 // #endregion
 

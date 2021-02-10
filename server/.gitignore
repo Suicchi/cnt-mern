@@ -14,11 +14,9 @@
 # visual studio code
 .vscode
 
-# environment files
-*.env
 
-# production
-/build
+
+
 
 # misc
 .DS_Store

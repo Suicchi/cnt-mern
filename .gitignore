@@ -15,10 +15,10 @@
 .vscode
 
 # environment files
-*.env
+server/configs/*.env
 
 # production
-/build
+server/build
 
 # misc
 .DS_Store
