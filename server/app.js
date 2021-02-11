@@ -87,7 +87,7 @@ if (process.env.NODE_ENV === 'development') {
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(process.cwd(), '/build')))
 	app.get('*', (req, res) => {
-		res.sendFile(path.join(__dirname, '/build'))
+		res.sendFile(path.join(__dirname, '/build/index.html'))
 	})
 }
 // #endregion
