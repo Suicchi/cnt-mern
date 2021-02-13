@@ -27,18 +27,19 @@ export default (passport) => {
 		),
 	)
 
-	passport.serializeUser((user, done) => {
-		done(null, user.id)
+	passport.serializeUser((user, callback) => {
+		callback(null, user.id)
 	})
 
-	passport.deserializeUser((id, done) => {
+	passport.deserializeUser((id, callback) => {
 		Users.findById(id, (err, user) => {
 			const userInfo = {
+				_id: user._id,
 				name: user.name,
 				username: user.username,
 				email: user.email,
 			}
-			done(err, userInfo)
+			callback(err, userInfo)
 		})
 	})
 }

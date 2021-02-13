@@ -52,8 +52,8 @@ app.use(
 app.use(
 	session({
 		secret: process.env.SESSIONSECRET,
-		resave: false,
-		saveUninitialized: false,
+		resave: true,
+		saveUninitialized: true,
 		cookie: {
 			httpOnly: true,
 			maxAge: parseInt(process.env.SESSIONAGE, 10),
@@ -64,32 +64,14 @@ app.use(
 	}),
 )
 
+// Cookie parser
+app.use(cookieParser(process.env.SESSIONSECRET))
+
 // initialize passport
 app.use(passport.initialize())
 app.use(passport.session())
 passportLocal(passport)
 
-// Cookie parser
-app.use(cookieParser(process.env.SESSIONSECRET))
-
-// #endregion
-
-// #region Development
-// * If the environment is development then use Morgan logger
-if (process.env.NODE_ENV === 'development') {
-	const morgan = import('morgan')
-	app.use(morgan('dev'))
-}
-// #endregion
-
-// #region Production
-// * If the environment is production then set static files
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(process.cwd(), '/build')))
-	app.get('*', (req, res) => {
-		res.sendFile(path.join(__dirname, '/build/index.html'))
-	})
-}
 // #endregion
 
 // #region Routes
@@ -98,6 +80,24 @@ app.use('/auth', authRoute)
 
 // Other routes
 
+// #endregion
+
+// #region Development
+// * If the environment is development then use Morgan logger
+if (process.env.NODE_ENV === 'development') {
+	const morgan = await import('morgan')
+	app.use(morgan.default('dev'))
+}
+// #endregion
+
+// #region Production
+// * If the environment is production then set static files
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(process.cwd(), '/build')))
+	app.get('*', (req, res) => {
+		res.sendFile(path.join(process.cwd(), '/build/index.html'))
+	})
+}
 // #endregion
 
 // #region Start Server

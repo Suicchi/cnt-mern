@@ -16,6 +16,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import Swal from 'sweetalert2'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import { signup } from '../../Actions/user'
 import { Redirect } from 'react-router-dom'
@@ -43,19 +44,21 @@ const useStyles = makeStyles((theme) => ({
 
 // #region Component Signup
 const Signup = () => {
+	// Check if someone is logged in
+	const currentUser = useSelector((state) => state.user)
 	// #region Methods and States
 	const styles = useStyles()
-	// * The error state
+	// The error state
 	const [error, setError] = useState()
 
-	// * Redirect on successful signup
+	// Redirect on successful signup
 	const [redirectToLogin, setRedirectToLogin] = useState(false)
 
-	// * Show password
+	// Show password
 	const [showPassword, setShowPassword] = useState(false)
 	const [showValidatePass, setShowValidatePass] = useState(false)
 
-	// * The user state
+	// The user state
 	const [user, setUser] = useState({
 		name: '',
 		username: '',
@@ -64,12 +67,12 @@ const Signup = () => {
 		validatePass: '',
 	})
 
-	// * This handles what happens when Textfield in the form changes
+	// This handles what happens when Textfield in the form changes
 	const handleChange = (key) => (event) => {
 		setUser({ ...user, [key]: event.target.value })
 	}
 
-	// * Clears all the states
+	// Clears all the states
 	const clear = () => {
 		setUser({
 			name: '',
@@ -81,11 +84,11 @@ const Signup = () => {
 		setError()
 	}
 
-	// * Handles what happens when form is submitted
+	// Handles what happens when form is submitted
 	const handleSubmit = (event) => {
 		event.preventDefault()
 
-		// * Call signup action
+		// Call signup action
 		signup(user)
 			.then((data) => {
 				Swal.fire({
@@ -110,7 +113,9 @@ const Signup = () => {
 	//#endregion
 
 	// #region JSX
-	return redirectToLogin ? (
+	return currentUser ? (
+		<Redirect to="/" />
+	) : redirectToLogin ? (
 		<Redirect to="/login" />
 	) : (
 		<Container maxWidth="xs">

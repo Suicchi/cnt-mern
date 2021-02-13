@@ -13,7 +13,7 @@ import dbHelper from '../helper/dbHelper.js'
  * TODO: Make Login Functional [Only when everything in signup is working as needed]
  */
 
-// #region Sign Up function
+// #region Sign Up Function
 const signUp = async (req, res) => {
 	try {
 		const newUser = req.body
@@ -37,29 +37,54 @@ const signUp = async (req, res) => {
 // #endregion
 
 // #region Login Function
-const login = async (req, res, next) => {
+const login = (req, res, next) => {
 	try {
 		passport.authenticate('local', (err, user, info) => {
-			if (err) return res.status(500).json(info)
+			if (err) throw err
 			if (!user) {
-				return res.status(404).json({ error: 'No user found' })
+				return res.status(404).json('Incorrect email or password')
 			}
 			req.login(user, (error) => {
 				if (error) throw error
-				return res.status(200).json(req.user)
+				const { _id, name, username, email } = req.user
+				return res.status(200).json({ _id, name, username, email })
 			})
-			return next()
 		})(req, res, next)
 	} catch (error) {
 		console.log(error)
-		return res.status(500).json({ error: 'Error logging in' })
+		return res.status(500).json('Error logging in')
 	}
-	return next()
 }
 // #endregion
 
+//#region logout Function
+
+const logout = (req, res) => {
+	try {
+		req.logout()
+		return res.json('success')
+	} catch (error) {
+		console.error(error)
+		return res.status(500).json('logout error')
+	}
+}
+//#endregion
+
+// #region getUser Function
+
+const getUser = (req, res) => {
+	try {
+		return res.status(200).json(req.user)
+	} catch (error) {
+		console.error(error)
+		return res.status(404).send('User does not exist')
+	}
+}
+
+// #endregion
+
 // #region exports
-export { signUp, login }
+export { signUp, login, getUser, logout }
 // #endregion
 
 // #endregion

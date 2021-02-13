@@ -8,7 +8,14 @@ const url = 'http://localhost:5000'
 
 // #region API methods
 export const signup = (newUser) => axios.post(`${url}/auth/signup`, newUser)
+
 export const login = (credentials) =>
-	axios.post(`${url}/auth/signup`, credentials)
+	axios.post(`${url}/auth/login`, credentials, { withCredentials: true })
+
+export const getUser = () =>
+	axios.post(`${url}/auth/getUser`, {}, { withCredentials: true })
+
+export const logout = () =>
+	axios.post(`${url}/auth/logout`, {}, { withCredentials: true })
 
 // #endregion

@@ -1,3 +1,8 @@
+// Adding a capitalize function to String prototype that turns hello to Hello
+String.prototype.capitalize = function () {
+	return this.charAt(0).toUpperCase() + this.slice(1)
+}
+
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 /**
@@ -15,10 +20,10 @@ const getSignUpError = (error) => {
 			// console.log('Errors from db')
 			// console.log(errors[item].kind)
 			if (errors[item].kind === 'user defined') {
-				errorMessage += `${errors[item].value}`
+				errorMessage += `${errors[item].value}`.capitalize()
 				return false
 			}
-			errorMessage += `${item}`
+			errorMessage += `${item}`.capitalize()
 			if (index < errorTypes.length - 1) {
 				errorMessage += ' & '
 			} else {
